@@ -2035,6 +2035,7 @@ void loop(void){
 			char buf[21];
 			sprintf(buf,"%d.%d.%d.%d",ip[0],ip[1],ip[2],ip[3]);
 			if (buf == "0.0.0.0") {
+			//if (strcmp(buf, "0.0.0.0") == 0) {
 				//if not connected, send reboot
 				WiFi.disconnect();
 				WiFiSetup.setAutoReconnect(false);
