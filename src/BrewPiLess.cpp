@@ -1769,6 +1769,9 @@ uint32_t _lcdReinitTime;
 
 void setup(void){
 
+	//waiting for board to power up
+	delay(2000);
+
 	#if SerialDebug == true
   	DebugPort.begin(115200);
   	DBG_PRINTF("\nSetup()\n");
