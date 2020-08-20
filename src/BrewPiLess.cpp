@@ -1676,8 +1676,9 @@ void brewpiLoop(void)
 //}brewpi
 
 
-#ifdef STATUS_LINE
 extern void makeTime(time_t timeInput, struct tm &tm);
+
+#ifdef STATUS_LINE
 
 typedef enum _StatusLineDisplayItem{
 StatusLineDisplayIP=0,
@@ -1953,6 +1954,7 @@ void setup(void){
 
 uint32_t _rssiReportTime;
 #define RssiReportPeriod 5
+extern void makeTime(time_t timeInput, struct tm &tm);
 
 void loop(void){
 //{brewpi
@@ -2020,6 +2022,26 @@ void loop(void){
 
 	if(!IS_RESTARTING){
 		WiFiSetup.stayConnected();
+	}
+
+	struct tm t;
+	makeTime(TimeKeeper.getLocalTimeSeconds(),t);
+	if (t.tm_sec == 0) {
+		//check for reboot every minute
+		uint8_t state = tempControl.getDisplayState();
+		if (state == STATE_OFF || state == IDLE) {
+			//check if is idle
+			IPAddress ip =(WiFiSetup.isApMode())? WiFi.softAPIP():WiFi.localIP();
+			char buf[21];
+			sprintf(buf,"%d.%d.%d.%d",ip[0],ip[1],ip[2],ip[3]);
+			if (buf == "0.0.0.0") {
+				//if not connected, send reboot
+				WiFi.disconnect();
+				WiFiSetup.setAutoReconnect(false);
+				delay(1000);
+				ESP.restart();
+			}
+		}
 	}
 
   	if(_systemState ==SystemStateRestartPending){
