@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
+BUILDDIR="../src/data"
 OUTDIR="cheader"
 DISTDIR="dist"
 
@@ -42,3 +43,5 @@ for lang in "${languages[@]}"
 do
 gen_C_file $lang
 done
+
+cp -r $OUTDIR/* $DISTDIR/
