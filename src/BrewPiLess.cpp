@@ -2026,16 +2026,15 @@ void loop(void){
 
 	struct tm t;
 	makeTime(TimeKeeper.getLocalTimeSeconds(),t);
-	if (t.tm_sec == 0) {
-		//check for reboot every minute
+	if (t.tm_min%5 == 0) {
+		//check for reboot every 10 minutes
 		uint8_t state = tempControl.getDisplayState();
 		if (state == STATE_OFF || state == IDLE) {
 			//check if is idle
 			IPAddress ip =(WiFiSetup.isApMode())? WiFi.softAPIP():WiFi.localIP();
 			char buf[21];
 			sprintf(buf,"%d.%d.%d.%d",ip[0],ip[1],ip[2],ip[3]);
-			if (buf == "0.0.0.0") {
-			//if (strcmp(buf, "0.0.0.0") == 0) {
+			if (strcmp(buf, "0.0.0.0") == 0) {
 				//if not connected, send reboot
 				WiFi.disconnect();
 				WiFiSetup.setAutoReconnect(false);
