@@ -1,3 +1,7 @@
+mauhk changes:
+-- fixed regex for spaces on log config;
+
+
 # BrewPiLess
  **Note: ALL BPL settings will be gone after upgrading to v3.0**
 
