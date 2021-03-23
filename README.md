@@ -1,5 +1,5 @@
 mauhk changes:
--- fixed regex for spaces on log config;
+* fixed regex for spaces on log config;
 
 
 # BrewPiLess
